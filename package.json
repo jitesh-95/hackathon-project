@@ -1,0 +1,28 @@
+{
+  "name": "hackathon-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jitesh-95/hackathon-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jitesh-95/hackathon-project/issues"
+  },
+  "homepage": "https://github.com/jitesh-95/hackathon-project#readme",
+  "dependencies": {
+    "@slack/bolt": "^3.12.1",
+    "@slack/socket-mode": "^1.3.1",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  }
+}
