@@ -1,4 +1,4 @@
-const { App, CustomRouteInitializationError } = require("@slack/bolt");
+const { App } = require("@slack/bolt");
 require("dotenv").config();
 
 const app = new App({
@@ -9,7 +9,8 @@ const app = new App({
 });
 
 // app.event("app_mention", async ({ event, client }) => {
-//   console.log(event);
+//   const mention = event.text.split(" ");
+//   console.log(mention);
 //   try {
 //     await client.chat.postMessage({
 //       channel: event.channel,
@@ -22,70 +23,116 @@ const app = new App({
 
 app.event("app_mention", async ({ event, say, client }) => {
   const mention = event.text.split(" ");
-  console.log(event);
-  if (mention.length === 1 || mention.length > 2) {
-    return say("**add a valid city name like:** @bot city");
+  if (mention.length === 1) {
+    return say("*add a valid city name like:* @bot city");
   }
   // await client.chat.postMessage({
   //   channel: event.channel,
   //   text: `Thanks for mentioning <@${event.user}>`,
   // });
-  if (mention[1] === "delhi") {
-    await say();
+  // if (mention[1] === "api") {
+  //   await say("something");
+  // }
+});
+
+// api
+app.event("app_mention", async ({ event, client }) => {
+  const mention = event.text.split(" ");
+  if (mention.length === 1) {
+    return client.chat.postMessage({
+      channel: event.channel,
+      text: "*ask valid question like:* *@bot Show me api list*, or  *@bot api*",
+    });
   }
-});
 
-app.message("leave the course", async ({ message, say }) => {
-  await say({
-    text: `Thanks`,
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "What if I leave the course in between?",
+  if (mention.includes("api")) {
+    await client.chat.postMessage({
+      channel: event.channel,
+      text: "something",
+      blocks: [
+        {
+          type: "divider",
         },
-        accessory: {
-          type: "button",
+        {
+          type: "section",
           text: {
-            type: "plain_text",
-            text: "Click Me",
-            emoji: true,
+            type: "mrkdwn",
+            text: `*Here Are Some Useful APIs for Developers. <@${event.user}>*`,
           },
-          value: "click_me_123",
-          action_id: "button-action1",
         },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "Where is Masai located?",
-        },
-        accessory: {
-          type: "button",
+        {
+          type: "section",
           text: {
-            type: "plain_text",
-            text: "Click Me",
-            emoji: true,
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/apidojo/api/imdb8/|IMDb API for movies data>*",
           },
-          value: "click_me_123",
-          action_id: "button-action2",
         },
-      },
-    ],
-  });
-});
-
-app.action("button-action1", async ({ ack, say }) => {
-  await ack();
-  await say("Got it 1");
-});
-
-app.action("button-action2", async ({ action, ack, say }) => {
-  await ack();
-  console.log(action);
-  await say("Got it 2");
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/weatherapi/api/weatherapi-com/|Weather API>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/googlecloud/api/google-translate1/|Google Translate API>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/spoonacular/api/recipe-food-nutrition/|Recipe - Food - Nutrition>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/meme-generator-api-meme-generator-api-default/api/meme-generator/|Meme Generator>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/apidojo/api/hotels4/|Hotels API>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/mashvisor-team/api/mashvisor/|Mashvisor Hotels API>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/apidojo/api/hm-hennes-mauritz/pricing|ECommerce API>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/ApiKeyHunter/api/fake-valid-cc-data-generator/|Fake Valid CC Data Generator>*",
+          },
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "*<https://rapidapi.com/apigeek/api/google-search3/|Google Search API>*",
+          },
+        },
+      ],
+    });
+  }
 });
 
 (async () => {
@@ -94,86 +141,3 @@ app.action("button-action2", async ({ action, ack, say }) => {
 
   console.log("⚡️ Bolt app is running!");
 })();
-
-// {
-// 	"type": "modal",
-// 	"title": {
-// 		"type": "plain_text",
-// 		"text": "HELP"
-// 	},
-// 	"submit": {
-// 		"type": "plain_text",
-// 		"text": "Send"
-// 	},
-// 	"close": {
-// 		"type": "plain_text",
-// 		"text": "Cancel",
-// 		"emoji": true
-// 	},
-// 	"blocks": [
-// 		{
-// 			"type": "divider"
-// 		},
-// 		{
-// 			"type": "input",
-// 			"element": {
-// 				"type": "multi_users_select",
-// 				"placeholder": {
-// 					"type": "plain_text",
-// 					"text": "Select users",
-// 					"emoji": true
-// 				},
-// 				"action_id": "multi_users_select-action"
-// 			},
-// 			"label": {
-// 				"type": "plain_text",
-// 				"text": "Ask your query to"
-// 			}
-// 		},
-// 		{
-// 			"type": "input",
-// 			"element": {
-// 				"type": "plain_text_input",
-// 				"multiline": true,
-// 				"action_id": "plain_text_input-action"
-// 			},
-// 			"label": {
-// 				"type": "plain_text",
-// 				"text": "Your query ?"
-// 			}
-// 		}
-// 	]
-// }
-
-// {
-// 	"type": "modal",
-// 	"title": {
-// 		"type": "plain_text",
-// 		"text": "HELP"
-// 	},
-// 	"submit": {
-// 		"type": "plain_text",
-// 		"text": "Submit"
-// 	},
-// 	"close": {
-// 		"type": "plain_text",
-// 		"text": "Cancel"
-// 	},
-// 	"blocks": [
-// 		{
-// 			"type": "section",
-// 			"text": {
-// 				"type": "mrkdwn",
-// 				"text": "Ask your query to"
-// 			},
-// 			"accessory": {
-// 				"type": "users_select",
-// 				"placeholder": {
-// 					"type": "plain_text",
-// 					"text": "Select a user"
-// 				},
-// 				"action_id": "users_select-action"
-// 			}
-// 		}
-// 	]
-// }
