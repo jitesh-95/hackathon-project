@@ -1,4 +1,4 @@
-const { App } = require("@slack/bolt");
+const { App, CustomRouteInitializationError } = require("@slack/bolt");
 require("dotenv").config();
 
 const app = new App({
@@ -22,16 +22,70 @@ const app = new App({
 
 app.event("app_mention", async ({ event, say, client }) => {
   const mention = event.text.split(" ");
+  console.log(event);
   if (mention.length === 1 || mention.length > 2) {
-    return say("add a valid city name like @bot city");
+    return say("**add a valid city name like:** @bot city");
   }
-  await client.chat.postMessage({
-    channel: event.channel,
-    text: `Thanks for mentioning <@${event.user}>`,
-  });
+  // await client.chat.postMessage({
+  //   channel: event.channel,
+  //   text: `Thanks for mentioning <@${event.user}>`,
+  // });
   if (mention[1] === "delhi") {
-    await say("weather is this.");
+    await say();
   }
+});
+
+app.message("leave the course", async ({ message, say }) => {
+  await say({
+    text: `Thanks`,
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "What if I leave the course in between?",
+        },
+        accessory: {
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Click Me",
+            emoji: true,
+          },
+          value: "click_me_123",
+          action_id: "button-action1",
+        },
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "Where is Masai located?",
+        },
+        accessory: {
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Click Me",
+            emoji: true,
+          },
+          value: "click_me_123",
+          action_id: "button-action2",
+        },
+      },
+    ],
+  });
+});
+
+app.action("button-action1", async ({ ack, say }) => {
+  await ack();
+  await say("Got it 1");
+});
+
+app.action("button-action2", async ({ action, ack, say }) => {
+  await ack();
+  console.log(action);
+  await say("Got it 2");
 });
 
 (async () => {
