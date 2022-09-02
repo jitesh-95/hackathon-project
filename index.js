@@ -28,7 +28,7 @@ app.event("app_mention", async ({ event, client }) => {
   if (mention.length === 1) {
     return client.chat.postMessage({
       channel: event.channel,
-      text: "*ask valid question like:* *@bot Show me api list*, or  *@bot api*",
+      text: "ask valid question like: \n *@bot Show me api list*, \n *@bot api* \n *@bot help*",
     });
   }
 
@@ -122,10 +122,18 @@ app.event("app_mention", async ({ event, client }) => {
   }
 });
 
-app.message("help", async ({ message, say }) => {
+// FAQ section
+app.message("help", async ({ say }) => {
   await say({
     text: `Thanks`,
     blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Frequently asked questions by Students.*",
+        },
+      },
       {
         type: "section",
         text: {
@@ -215,6 +223,7 @@ app.message("help", async ({ message, say }) => {
   });
 });
 
+// button 1
 app.action("button-action1", async ({ ack, say }) => {
   await ack();
   await say(
@@ -222,62 +231,61 @@ app.action("button-action1", async ({ ack, say }) => {
   );
 });
 
-app.action("button-action2", async ({ action, ack, say }) => {
+// button 2
+app.action("button-action2", async ({ ack, say }) => {
   await ack();
 
   await say(
-    "Please refer to the below sheet to see the evaluation schedule for the upcoming week: 5th September 2022 [Monday] \n No Re-evaluation will be planned for the evaluation of W35.\n Please turn off your slack notifications while appearing for evaluations."
-  );
-  await say(
-    "*<https://docs.google.com/spreadsheets/d/e/2PACX-1vTRh0cXTM5RJ0q_EnWjLyhsRghli4QTzPTe94wXIPOTFl-XB5rXhqNPzsR2rJf-wakZlgyxbBnjYncH/pubhtml?gid=1899637468&single=true|evaluation schedule>*"
+    "Please refer to the below sheet to see the evaluation schedule for the upcoming week: 5th September 2022 [Monday] \n No Re-evaluation will be planned for the evaluation of W35.\n Please turn off your slack notifications while appearing for evaluations. \n *<https://docs.google.com/spreadsheets/d/e/2PACX-1vTRh0cXTM5RJ0q_EnWjLyhsRghli4QTzPTe94wXIPOTFl-XB5rXhqNPzsR2rJf-wakZlgyxbBnjYncH/pubhtml?gid=1899637468&single=true|evaluation schedule>*"
   );
 });
-app.action("button-action3", async ({ action, ack, say }) => {
+
+// buttoon 3
+app.action("button-action3", async ({ ack, say }) => {
   await ack();
 
   await say(
-    "Dear Students \n please find the pair programming booking procedure for this block ."
-  );
-  await say(
-    "<https://ft-web-17.slack.com/files/U02TES3AQ9M/F040LQT6Y8J/pp_block19_students.pdf|Block Plan>"
+    "Dear Students \n please find the pair programming booking procedure for this block. \n *<https://ft-web-17.slack.com/files/U02TES3AQ9M/F040LQT6Y8J/pp_block19_students.pdf|Block Plan>*"
   );
 });
-app.action("button-action4", async ({ action, ack, say }) => {
+
+// button 4
+app.action("button-action4", async ({ ack, say }) => {
   await ack();
 
   await say(
     "Dear Students, \n <https://datastudio.google.com/u/0/reporting/7c681f02-0270-4797-8ec4-ac0edba13c21/page/CnmvC?s=kGJ4bAEewnE|Please find the sprint plan for this week > "
   );
 });
-app.action("button-action5", async ({ action, ack, say }) => {
+
+// button 5
+app.action("button-action5", async ({ ack, say }) => {
   await ack();
 
   await say("@botname-query- *write your query here*");
 });
 
-app.event("app_mention", async ({ event, say, client }) => {
+// api calling
+app.event("app_mention", async ({ event, say }) => {
   const mention = event.text.split("-");
- 
-
 
   if (mention[1] === "query") {
-    await say(`Thanks for Writing us. We will get back you soon <@${event.user}>`)
+    await say(
+      `Thanks for Writing us. We will get back you soon <@${event.user}>`
+    );
     axios.post(
-      "https://hooks.slack.com/services/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",
+      "https://hooks.slack.com/services/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",
       {
         text: `*Query from <@${event.user}>* \n ${mention[2]}`,
       }
     );
-    
-  }  
+  }
 });
 
-
-
-
+// port
 (async () => {
   // Start the app
-  await app.start(5000);
+  await app.start(process.env.PORT || 8080);
 
   console.log("⚡️ Bolt app is running!");
 })();
