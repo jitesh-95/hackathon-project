@@ -21,20 +21,6 @@ const app = new App({
 //   }
 // });
 
-app.event("app_mention", async ({ event, say, client }) => {
-  const mention = event.text.split(" ");
-  if (mention.length === 1) {
-    return say("*add a valid city name like:* @bot city");
-  }
-  // await client.chat.postMessage({
-  //   channel: event.channel,
-  //   text: `Thanks for mentioning <@${event.user}>`,
-  // });
-  // if (mention[1] === "api") {
-  //   await say("something");
-  // }
-});
-
 // api
 app.event("app_mention", async ({ event, client }) => {
   const mention = event.text.split(" ");
